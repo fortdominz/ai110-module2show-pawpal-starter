@@ -123,10 +123,20 @@ I am confident at 4 out of 5 stars that the scheduler works correctly. All 12 te
 
 - What part of this project are you most satisfied with?
 
+The part I am most satisfied with is the algorithmic layer — specifically how the Scheduler sorts tasks by priority first and then by time. Seeing it correctly place an urgent medication task above a high priority morning walk, even though the walk was earlier in the day, showed that the logic was working exactly as designed. The conflict detection also worked cleanly on the first try.
+
+
+
 **b. What you would improve**
 
 - If you had another iteration, what would you improve or redesign?
 
+If I had another iteration, I would redesign the UI to support multiple pets more explicitly, allowing the user to select which pet to assign a task to rather than always defaulting to the first pet. I would also add duration-based conflict detection so that overlapping tasks are flagged even if their start times differ.
+
+
+
 **c. Key takeaway**
 
 - What is one important thing you learned about designing systems or working with AI on this project?
+
+The most important thing I learned is that AI is a powerful collaborator but not a replacement for design thinking. Copilot could generate code quickly, but it was my job to decide what to keep, what to reject, and what scope was appropriate for the project. Being the lead architect meant making judgment calls at every step — and those decisions shaped the final system more than any single line of code.
