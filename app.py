@@ -77,19 +77,24 @@ with col5:
 frequency = st.selectbox("Frequency", ["once", "daily", "weekly"], index=1)
 
 if st.button("Add task"):
-    task = Task(
-        title=task_title,
-        date=task_date,
-        time=task_time,
-        duration_minutes=int(duration),
-        priority=priority,
-        frequency=frequency
-    )
-    if st.session_state.owner.pets:
-        st.session_state.owner.pets[0].add_task(task)
-        st.success(f"Task '{task_title}' added to {pet_name}!")
-    else:
-        st.error("No pet found to add task to.")
+    try:
+        from datetime import date as date_type
+        parsed_date = date_type.fromisoformat(task_date)
+        task = Task(
+            title=task_title,
+            date=parsed_date,
+            time=task_time,
+            duration_minutes=int(duration),
+            priority=priority,
+            frequency=frequency
+        )
+        if st.session_state.owner.pets:
+            st.session_state.owner.pets[0].add_task(task)
+            st.success(f"Task '{task_title}' added to {pet_name}!")
+        else:
+            st.error("No pet found to add task to.")
+    except ValueError:
+        st.error("Invalid date format. Please use YYYY-MM-DD.")
 
 # Display current tasks
 if st.session_state.owner.pets and st.session_state.owner.pets[0].tasks:

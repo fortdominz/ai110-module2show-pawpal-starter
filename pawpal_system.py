@@ -1,21 +1,37 @@
+from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import List
+from datetime import date, timedelta
 
 
 @dataclass
 class Task:
     """Represents a pet care task."""
     title: str
-    date: str
+    date: date
     time: str
     duration_minutes: int
     priority: str
     frequency: str
     completed: bool = False
     
-    def mark_complete(self):
+    def mark_complete(self) -> Optional['Task']:
         """Mark the task as completed."""
         self.completed = True
+        if self.frequency.lower() in ['daily', 'weekly']:
+            days = 1 if self.frequency.lower() == 'daily' else 7
+            new_date = self.date + timedelta(days=days)
+            new_task = Task(
+                title=self.title,
+                date=new_date,
+                time=self.time,
+                duration_minutes=self.duration_minutes,
+                priority=self.priority,
+                frequency=self.frequency,
+                completed=False
+            )
+            return new_task
+        return None
 
 
 @dataclass
@@ -95,7 +111,7 @@ class Scheduler:
         time_map = {}
         
         for task in tasks:
-            time_key = f"{task.date} {task.time}"
+            time_key = f"{task.date.isoformat()} {task.time}"
             if time_key in time_map:
                 conflict_msg = f"Conflict: '{task.title}' and '{time_map[time_key].title}' scheduled at {time_key}"
                 conflicts.append(conflict_msg)
@@ -112,7 +128,7 @@ class Scheduler:
         explanation = "Schedule Overview:\n"
         for i, task in enumerate(tasks, 1):
             status = "✓" if task.completed else "○"
-            explanation += f"{i}. [{status}] {task.title} - {task.date} at {task.time} ({task.duration_minutes} min, Priority: {task.priority})\n"
+            explanation += f"{i}. [{status}] {task.title} - {task.date.isoformat()} at {task.time} ({task.duration_minutes} min, Priority: {task.priority})\n"
         
         return explanation
     
