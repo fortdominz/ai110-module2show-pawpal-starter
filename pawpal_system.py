@@ -2,6 +2,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import List, Tuple, Optional
 from datetime import date, timedelta
+from collections import defaultdict
 
 
 @dataclass
@@ -110,16 +111,18 @@ class Scheduler:
     
     def detect_conflicts(self, tasks: List[Task]) -> List[str]:
         """Return warning strings for any two tasks scheduled at the same time."""
-        conflicts = []
-        time_map = {}
+        time_to_tasks = defaultdict(list)
         
         for task in tasks:
             time_key = f"{task.date.isoformat()} {task.time}"
-            if time_key in time_map:
-                conflict_msg = f"Conflict: '{task.title}' and '{time_map[time_key].title}' scheduled at {time_key}"
-                conflicts.append(conflict_msg)
-            else:
-                time_map[time_key] = task
+            time_to_tasks[time_key].append(task)
+        
+        conflicts = []
+        for time_key, task_list in time_to_tasks.items():
+            if len(task_list) > 1:
+                for i in range(len(task_list)):
+                    for j in range(i + 1, len(task_list)):
+                        conflicts.append(f"Conflict: '{task_list[i].title}' and '{task_list[j].title}' scheduled at {time_key}")
         
         return conflicts
     

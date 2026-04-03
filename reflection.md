@@ -43,10 +43,6 @@ After asking Copilot to review the skeleton, I accepted the suggestion to add a 
 **a. Constraints and priorities**
 
 - What constraints does your scheduler consider (for example: time, priority, preferences)?
-
-The scheduler considers priority (urgent, high, medium, low) and time (HH:MM format).
-
-
 - How did you decide which constraints mattered most?
 
 The scheduler considers two main constraints: priority and time. Priority is ranked in four levels — urgent, high, medium, and low — and is always sorted first. Time is used as a secondary sort, meaning if two tasks share the same priority, the earlier one in the day appears first. I decided priority matters most because a pet's medication or urgent care should never be pushed back just because it's scheduled later in the day. Time matters second because within the same priority level, a logical daily flow makes the schedule easier for the owner to follow.
@@ -84,13 +80,13 @@ The most helpful prompts were ones that gave Copilot specific context about what
 **b. Judgment and verification**
 
 - Describe one moment where you did not accept an AI suggestion as-is.
-
-When Copilot reviewed my class skeletons, it suggested adding id fields to Task, Pet, and Owner, timestamps like created_at and updated_at, and a tasks_cache on the Scheduler for performance. I rejected these suggestions because they added unnecessary complexity for a project of this scope.
-
-
 - How did you evaluate or verify what the AI suggested?
 
-I evaluated them by asking whether each suggestion was required for the core scheduling features... if it wasn't, I left it out. I also kept urgent as a fourth priority level that Copilot added to generate_schedule() because it made the scheduler more realistic for medication or emergency tasks.
+When Copilot reviewed my class skeletons, it suggested adding id fields to Task, Pet, and Owner, timestamps like created_at and updated_at, and a tasks_cache on the Scheduler for performance. I rejected these suggestions because they added unnecessary complexity for a project of this scope. I evaluated them by asking whether each suggestion was required for the core scheduling features... if it wasn't, I left it out. I also kept urgent as a fourth priority level that Copilot added to generate_schedule() because it made the scheduler more realistic for medication or emergency tasks.
+
+
+I asked Copilot to simplify detect_conflicts(). It suggested using defaultdict to group tasks by time slot, which was more readable and also handled cases where 3 or more tasks share the same time. I accepted this change because it was genuinely clearer and more capable than my original version.
+
 
 
 
