@@ -1,4 +1,4 @@
-from pawpal_system import Task, Pet
+from pawpal_system import Task, Pet, Owner, Scheduler
 from datetime import date
 
 
@@ -16,6 +16,37 @@ def test_pet_add_task():
                 priority="medium", frequency="daily")
     pet.add_task(task)
     assert len(pet.get_tasks()) == 1
+
+
+def test_scheduler_sort_by_time():
+    scheduler = Scheduler()
+    task1 = Task(title="Walk", date=date(2026, 4, 3), time="14:30", duration_minutes=30,
+                 priority="medium", frequency="once")
+    task2 = Task(title="Feeding", date=date(2026, 4, 3), time="08:00", duration_minutes=10,
+                 priority="high", frequency="once")
+    task3 = Task(title="Medication", date=date(2026, 4, 3), time="12:00", duration_minutes=5,
+                 priority="low", frequency="once")
+    tasks = [(task1, "Mochi"), (task2, "Mochi"), (task3, "Mochi")]
+    sorted_tasks = scheduler.sort_by_time(tasks)
+    assert [task.time for task, _ in sorted_tasks] == ["08:00", "12:00", "14:30"]
+
+
+def test_scheduler_detect_conflicts():
+    scheduler = Scheduler()
+    task1 = Task(title="Vet", date=date(2026, 4, 3), time="10:00", duration_minutes=30,
+                 priority="high", frequency="once")
+    task2 = Task(title="Grooming", date=date(2026, 4, 3), time="10:00", duration_minutes=60,
+                 priority="medium", frequency="once")
+    conflicts = scheduler.detect_conflicts([task1, task2])
+    assert len(conflicts) == 1
+    assert "Conflict" in conflicts[0]
+    assert "Vet" in conflicts[0]
+    assert "Grooming" in conflicts[0]
+
+
+def test_pet_with_no_tasks_returns_empty_list():
+    pet = Pet(name="Luna", species="Cat")
+    assert pet.get_tasks() == []
 
 
 def test_recurring_task_daily():
