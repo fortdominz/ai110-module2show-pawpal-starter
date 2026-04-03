@@ -52,3 +52,29 @@ PawPal+ includes the following algorithmic features:
 - **Filtering**: Tasks can be filtered by completion status or by pet name.
 - **Recurring tasks**: Marking a daily or weekly task complete automatically generates the next occurrence using Python's timedelta.
 - **Conflict detection**: The scheduler detects tasks scheduled at the same time and returns warning messages using defaultdict for efficient grouping.
+
+
+## Testing PawPal+
+
+To run the test suite:
+```bash
+python -m pytest
+```
+
+
+### What the tests cover
+
+- Task completion and status change
+- Adding tasks to a pet
+- Sorting tasks chronologically by time
+- Conflict detection for two or more tasks at the same time slot
+- Empty pet and empty owner edge cases
+- Recurring task generation for daily and weekly frequencies
+- "once" frequency tasks returning no new task on completion
+- Unknown priority values not crashing the scheduler
+- Filtering returning empty list when no tasks match
+
+
+### Confidence Level
+
+⭐⭐⭐⭐ (4/5) — All 12 tests pass covering core behaviors and key edge cases. Confidence would increase further with tests for malformed time strings and month/year boundary recurrence.
