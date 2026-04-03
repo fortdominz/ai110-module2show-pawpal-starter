@@ -101,7 +101,7 @@ I asked Copilot to simplify detect_conflicts(). It suggested using defaultdict t
 - What behaviors did you test?
 - Why were these tests important?
 
-I tested seven behaviors: task completion status, adding a task to a pet, sorting tasks chronologically by time, conflict detection for tasks at the same time slot, an empty pet returning an empty task list, and recurring task generation for both daily and weekly frequencies. These tests were important because they verify the core scheduling intelligence of the app — if any of these break, the schedule would be wrong or misleading to the user.
+I tested 12 behaviors including: task completion status, adding tasks to a pet, sorting tasks chronologically, conflict detection for two and three tasks at the same time slot, empty pet and empty owner edge cases, recurring task generation for daily and weekly frequencies, "once" frequency tasks returning no new task, unknown priority values not crashing the scheduler, and filtering returning an empty list when no tasks match. These tests were important because they verify both the happy paths and edge cases of the core scheduling logic.
 
 
 **b. Confidence**
@@ -109,7 +109,7 @@ I tested seven behaviors: task completion status, adding a task to a pet, sortin
 - How confident are you that your scheduler works correctly?
 - What edge cases would you test next if you had more time?
 
-I am confident the scheduler handles the core happy paths correctly — all 7 tests pass. Edge cases I would test next include: a pet with tasks across multiple days, a task with an invalid time format, marking a "once" frequency task complete and confirming no new task is created, and filtering tasks when no tasks match the criteria.
+I am confident at 4 out of 5 stars that the scheduler works correctly. All 12 tests pass covering the most important behaviors. Edge cases I would test next if I had more time include malformed time strings like "9am" instead of "09:00", recurring tasks crossing month and year boundaries, and tasks with missing required fields.
 
 
 
