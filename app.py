@@ -120,33 +120,52 @@ st.divider()
 st.subheader("Build Schedule")
 st.caption("This button should call your scheduling logic once you implement it.")
 
+status_filter = st.selectbox(
+    "Filter tasks by completion status",
+    ["All", "Completed", "Incomplete"],
+    index=0
+)
+
 if st.button("Generate schedule"):
     scheduler = Scheduler()
     schedule = scheduler.generate_schedule(st.session_state.owner)
     
     if schedule:
-        st.write("Generated Schedule:")
-        schedule_data = [
-            {
-                "Title": t.title,
-                "Date": t.date,
-                "Time": t.time,
-                "Duration": f"{t.duration_minutes} min",
-                "Priority": t.priority,
-                "Completed": "✓" if t.completed else "○"
-            }
-            for t in schedule
+        filtered_schedule = [
+            t for t in schedule
+            if status_filter == "All"
+            or (status_filter == "Completed" and t.completed)
+            or (status_filter == "Incomplete" and not t.completed)
         ]
-        st.table(schedule_data)
-        
-        explanation = scheduler.build_explanation(schedule)
-        st.text_area("Schedule Explanation", value=explanation, height=200)
-        
-        conflicts = scheduler.detect_conflicts(schedule)
-        if conflicts:
-            for conflict in conflicts:
-                st.warning(conflict)
+
+        if filtered_schedule:
+            st.write("Generated Schedule:")
+            schedule_data = [
+                {
+                    "Title": t.title,
+                    "Date": t.date,
+                    "Time": t.time,
+                    "Duration": f"{t.duration_minutes} min",
+                    "Priority": t.priority,
+                    "Completed": "✓" if t.completed else "○"
+                }
+                for t in filtered_schedule
+            ]
+            st.table(schedule_data)
+
+            explanation = scheduler.build_explanation(filtered_schedule)
+            st.text_area("Schedule Explanation", value=explanation, height=200)
+
+            conflicts = scheduler.detect_conflicts(filtered_schedule)
+            if conflicts:
+                st.warning(
+                    "Schedule conflict detected: two or more tasks share the same date and time."
+                )
+                for conflict in conflicts:
+                    st.warning(f"• {conflict}")
+            else:
+                st.success("No conflicts detected in the generated schedule.")
         else:
-            st.success("No conflicts detected.")
+            st.info("No tasks match the selected completion status.")
     else:
         st.info("No tasks to schedule.")
