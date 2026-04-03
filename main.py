@@ -1,20 +1,21 @@
 from pawpal_system import Owner, Pet, Task, Scheduler
+from datetime import date
 
 
 def main():
     # Create owner and pets
     owner = Owner(name="Jordan")
     mochi = Pet(name="Mochi", species="Dog")
-    luna = Pet(name="Luna", species="Cat")
+    luna = Pet(name="Cat", species="Cat")
 
     # Create tasks
-    t1 = Task(title="Morning Walk", date="2026-04-03", time="07:00", duration_minutes=30,
+    t1 = Task(title="Morning Walk", date=date(2026, 4, 3), time="07:00", duration_minutes=30,
               priority="high", frequency="daily")
-    t2 = Task(title="Feeding", date="2026-04-03", time="08:00", duration_minutes=15,
+    t2 = Task(title="Feeding", date=date(2026, 4, 3), time="08:00", duration_minutes=15,
               priority="medium", frequency="daily")
-    t3 = Task(title="Medication", date="2026-04-03", time="08:00", duration_minutes=5,
+    t3 = Task(title="Medication", date=date(2026, 4, 3), time="08:00", duration_minutes=5,
               priority="urgent", frequency="once")
-    t4 = Task(title="Evening Play", date="2026-04-03", time="18:30", duration_minutes=20,
+    t4 = Task(title="Evening Play", date=date(2026, 4, 3), time="18:30", duration_minutes=20,
               priority="low", frequency="weekly")
 
     # Assign tasks to pets

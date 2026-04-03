@@ -1,6 +1,6 @@
 from __future__ import annotations
 from dataclasses import dataclass, field
-from typing import List
+from typing import List, Tuple, Optional
 from datetime import date, timedelta
 
 
@@ -60,11 +60,12 @@ class Owner:
         """Add a pet to the owner's pet list."""
         self.pets.append(pet)
     
-    def get_all_tasks(self) -> List[Task]:
-        """Retrieve all tasks across all pets."""
+    def get_all_tasks(self) -> List[Tuple[Task, str]]:
+        """Retrieve all tasks across all pets as tuples of (task, pet_name)."""
         all_tasks = []
         for pet in self.pets:
-            all_tasks.extend(pet.get_tasks())
+            for task in pet.tasks:
+                all_tasks.append((task, pet.name))
         return all_tasks
 
 
@@ -84,25 +85,27 @@ class Scheduler:
             except (ValueError, AttributeError):
                 return 0
         
-        sorted_tasks = sorted(all_tasks, key=lambda task: (priority_value(task), time_to_minutes(task.time)))
-        return sorted_tasks
+        sorted_tuples = sorted(all_tasks, key=lambda t: (priority_value(t[0]), time_to_minutes(t[0].time)))
+        return [t[0] for t in sorted_tuples]
     
-    def sort_by_time(self, tasks: List[Task]) -> List[Task]:
+    def sort_by_time(self, tasks: List[Tuple[Task, str]]) -> List[Tuple[Task, str]]:
         """Sort tasks by their time attribute chronologically."""
         def time_to_minutes(time_str: str) -> int:
             try:
-                hours, minutes = map(int, time_str.split(':'))
+                hours, minutes = map(int, time_str.split(':', 1))
                 return hours * 60 + minutes
             except (ValueError, AttributeError):
                 return 0
         
-        return sorted(tasks, key=lambda task: time_to_minutes(task.time))
+        return sorted(tasks, key=lambda t: time_to_minutes(t[0].time))
     
-    def filter_tasks(self, tasks: List[Task], criteria: dict) -> List[Task]:
+    def filter_tasks(self, tasks: List[Tuple[Task, str]], criteria: dict) -> List[Tuple[Task, str]]:
         """Filter tasks by completed status or pet ownership."""
         filtered = tasks
         if 'completed' in criteria:
-            filtered = [t for t in filtered if t.completed == criteria['completed']]
+            filtered = [t for t in filtered if t[0].completed == criteria['completed']]
+        if 'pet_name' in criteria:
+            filtered = [t for t in filtered if t[1] == criteria['pet_name']]
         return filtered
     
     def detect_conflicts(self, tasks: List[Task]) -> List[str]:
