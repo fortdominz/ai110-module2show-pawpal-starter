@@ -72,7 +72,7 @@ class Scheduler:
         """Build a human-readable explanation of the schedule."""
         pass
     
-    def add_task(self, owner: Owner, task: Task):
+    def add_task(self, owner: Owner, pet: Pet, task: Task):
         """Add a task to a pet owned by the owner."""
         pass
     
@@ -84,6 +84,6 @@ class Scheduler:
         """Edit an existing task with updates."""
         pass
     
-    def remove_task(self, owner: Owner, task: Task):
+    def remove_task(self, owner: Owner, pet: Pet, task: Task):
         """Remove a task from an owner's pet."""
         pass

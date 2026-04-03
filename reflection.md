@@ -7,10 +7,28 @@
 - Briefly describe your initial UML design.
 - What classes did you include, and what responsibilities did you assign to each?
 
+My initial UML design consists of four classes: Task, Pet, Owner, and Scheduler.
+
+Task is responsible for representing a single care activity. It stores the title, date, time, duration, priority, frequency, and completion status of an activity. Its only method is mark_complete() which flips its status to done.
+
+Pet is responsible for representing an animal belonging to the owner. It stores the pet's name, species, and a list of tasks assigned to it. It can add a new task via add_task() and return its task list via get_tasks().
+
+Owner is responsible for representing the user of the app. It stores the owner's name and a list of their pets. It can add a new pet via add_pet() and retrieve all tasks across all pets via get_all_tasks().
+
+Scheduler is the brain of the system and holds no data of its own. It is responsible for all actions performed on the schedule: adding, editing, removing, and completing tasks, as well as sorting tasks by time, filtering them, detecting conflicts, generating the daily plan, and explaining the reasoning behind it.
+
+
+
 **b. Design changes**
 
 - Did your design change during implementation?
+Yes
+
 - If yes, describe at least one change and why you made it.
+After asking Copilot to review the skeleton, I accepted the suggestion to add a pet parameter to Scheduler.add_task() and Scheduler.remove_task() since without it those methods wouldn't know which pet to assign the task to. I also noted that filter_tasks() needed a clearer criteria parameter. I rejected suggestions like adding id fields, timestamps, and persistence as they are beyond the scope of this project.
+
+
+
 
 ---
 
