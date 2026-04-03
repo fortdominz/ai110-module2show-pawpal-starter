@@ -78,3 +78,19 @@ python -m pytest
 ### Confidence Level
 
 ⭐⭐⭐⭐ (4/5) — All 12 tests pass covering core behaviors and key edge cases. Confidence would increase further with tests for malformed time strings and month/year boundary recurrence.
+
+
+## Features
+
+- **Owner & Pet Management**: Add an owner and one or more pets with name and species info
+- **Task Scheduling**: Create care tasks with title, date, time, duration, priority, and frequency
+- **Priority-Based Scheduling**: Tasks are sorted by urgency first (urgent → high → medium → low), then by time
+- **Recurring Tasks**: Daily and weekly tasks automatically generate the next occurrence when marked complete
+- **Conflict Detection**: The scheduler warns when two or more tasks are scheduled at the same date and time
+- **Filtering**: View tasks filtered by completion status (All, Completed, Incomplete)
+- **Schedule Explanation**: A readable summary explains the order and status of each scheduled task
+- **Automated Tests**: 12 pytest tests verify core behaviors and edge cases
+
+## 📸 Demo
+
+![PawPal App](pawpal_demo_img.png)
