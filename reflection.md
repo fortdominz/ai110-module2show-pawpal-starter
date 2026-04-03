@@ -49,21 +49,17 @@ The scheduler considers priority (urgent, high, medium, low) and time (HH:MM for
 
 - How did you decide which constraints mattered most?
 
-I decided priority matters most because a medication task should always appear before a play session regardless of what time it's scheduled.
-
+The scheduler considers two main constraints: priority and time. Priority is ranked in four levels — urgent, high, medium, and low — and is always sorted first. Time is used as a secondary sort, meaning if two tasks share the same priority, the earlier one in the day appears first. I decided priority matters most because a pet's medication or urgent care should never be pushed back just because it's scheduled later in the day. Time matters second because within the same priority level, a logical daily flow makes the schedule easier for the owner to follow.
 
 
 **b. Tradeoffs**
 
 - Describe one tradeoff your scheduler makes.
-
-The scheduler only checks for exact time matches when detecting conflicts, for example, two tasks both at 07:00. It does not account for overlapping durations, meaning a 30-minute task at 07:00 and a task at 07:15 would not be flagged as a conflict even though they overlap. 
-
-
 - Why is that tradeoff reasonable for this scenario?
 
-This tradeoff is reasonable for this project because exact time matching is simpler to implement and still catches the most obvious scheduling mistakes.
+The scheduler only checks for exact time matches when detecting conflicts, for example, two tasks both at 07:00. It does not account for overlapping durations, meaning a 30-minute task at 07:00 and a task at 07:15 would not be flagged as a conflict even though they overlap. This tradeoff is reasonable for this project because exact time matching is simpler to implement and still catches the most obvious scheduling mistakes.
 
+The filter_tasks() method was updated to support filtering by pet name by changing get_all_tasks() to return tuples of (task, pet_name). This means the Scheduler now depends on tuples rather than plain Task objects, which is a small tradeoff in simplicity for the benefit of knowing which pet owns each task.
 
 
 
